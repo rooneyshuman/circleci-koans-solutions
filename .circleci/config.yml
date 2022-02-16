@@ -7,7 +7,7 @@ jobs:
       - checkout
       # These two tests should run in parallel. Make it so!
       - run:
-          name: Run Hello test test
+          name: Run Hello test
           command: |
             bash src/test_hello.sh
       - run:
