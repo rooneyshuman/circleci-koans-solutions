@@ -1,23 +1,40 @@
-version: 2
+version: 2.1
 jobs:
-  test:
+  hello_job:
     docker:
       - image: circleci/node
     steps:
       - checkout
-      # These two tests should run in parallel. Make it so!
       - run:
-          name: Run Hello test
+          name: Run Hello script
           command: |
             bash src/test_hello.sh
+  goodbye_job:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
       - run:
-          name: Run Goodbye test
+          name: Run Goodbye script
           command: |
             bash src/test_goodbye.sh
-    parallelism: 2
 
 workflows:
   version: 2
-  test:
+  hello:
+    when: << pipeline.parameters.run_workflow_hello >>
     jobs:
-      - test
+      - hello_job
+  goodbye:
+    when: << pipeline.parameters.run_workflow_goodbye >>
+    jobs:
+      - goodbye_job
+
+parameters:
+  run_workflow_hello:
+    default: true
+    type: boolean
+
+  run_workflow_goodbye:
+    default: true
+    type: boolean
